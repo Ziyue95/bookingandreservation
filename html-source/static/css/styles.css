@@ -1,0 +1,17 @@
+/* modify style for notie  */
+.notie-container {
+    box-shadow: none;
+}
+/* self-defined style for footer  */
+.my-self-defined-footer {
+    height: 3.5em;
+    background-color: #525355;
+    margin-top: 1.5em;
+    padding: 1.13em;
+    color: white;
+    font-size: 90%;
+}
+
+.datepicker {
+    z-index: 10000;
+}
