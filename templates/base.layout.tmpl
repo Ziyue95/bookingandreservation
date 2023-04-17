@@ -278,6 +278,7 @@
                     backdrop: false,
                     focusConfirm: false,
                     showCancelButton: true,
+                    // Move willOpen, didOpen that specific for this usecase to c, which improve the generality of function custom in Prompt
                     willOpen: () => {
                         if (c.willOpen !== undefined) {
                             c.willOpen();
