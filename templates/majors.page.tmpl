@@ -1,0 +1,75 @@
+{{template "base" .}}
+
+{{define "content"}}
+    <div class="container">
+
+            <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 mx-auto d-block">
+                    <img src="/static/room-images/marjors-suite.png" class = "img-fluid img-thumbnail" alt="Major Suite">
+                </div>
+            </div>
+
+            <!-- Implement formatting using row and col  -->
+            <div class="row">
+                <div class="col">
+                    <h1 class="text-center mt-4">Major's Suite</h1>
+                    <p>
+                        Your home away from home, set on the majesty waters of the Atlantic Ocean, this will be a vacation to remember.
+                        Your home away from home, set on the majesty waters of the Atlantic Ocean, this will be a vacation to remember.
+                        Your home away from home, set on the majesty waters of the Atlantic Ocean, this will be a vacation to remember.
+                        Your home away from home, set on the majesty waters of the Atlantic Ocean, this will be a vacation to remember.
+                    </p>
+                </div>
+            </div>
+
+            <div class="row">
+
+                <div class="col text-center">
+    
+                    <a id= "check-availability-button" href="#!" class="btn btn-success">Check Availability</a>
+    
+                </div>
+            </div>
+
+        </div>
+{{end}}
+
+{{define "js"}}
+    <script>
+        // Add an EventListener for element with id "check-availability-button", and trigger function when event "click" happens
+        // ((...) => {...}) is same as function(...){...}
+        document.getElementById("check-availability-button").addEventListener("click", (() => {
+
+            // Use SweetAlert2 for Notification & Prompt
+            let html =  `
+            <form id = "check-availability-form" action = "" method = "post" novalidate class="needs-validation">
+                <div class="form-row">
+                <div class="col">
+
+                    <div class="form-row" id="reservation-dates-modal">
+
+                    <div class="col">
+                        <label for="start_date" class="form-label">Starting Date</label>
+                        <input disabled required class="form-control" type="text" name="start-date" id="start-date" placeholder="YYYY/MM/DD">
+                    </div>
+
+                    <div class="col">
+                        <label for="end_date" class="form-label">Ending Date</label>
+                        <input disabled required class="form-control" type="text" name="end-date" id="end-date" placeholder="YYYY/MM/DD">
+                    </div>
+
+                    </div>
+
+                </div>
+                </div>
+            </form>
+            `;
+            // inject html defined above to Promp.custom function
+            attention.custom({
+                html: html, 
+                title: "Choose your date"
+            }); 
+        })
+        )
+    </script>
+{{end}}

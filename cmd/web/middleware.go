@@ -17,7 +17,7 @@ func WriteToConsole(next http.Handler) http.Handler {
 	})
 }
 
-// NoSurf adds CSRF protection to all POST requests
+// NoSurf is the csrf protection middleware
 func NoSurf(next http.Handler) http.Handler {
 	// initialize a nodurf handler
 	csrfHandler := nosurf.New(next)
@@ -25,11 +25,10 @@ func NoSurf(next http.Handler) http.Handler {
 	// create nosurf token using basic http cookie
 	csrfHandler.SetBaseCookie(http.Cookie{
 		HttpOnly: true,
-		Path:     "/.",
+		Path:     "/",
 		Secure:   app.InProduction,
 		SameSite: http.SameSiteLaxMode,
 	})
-
 	return csrfHandler
 }
 

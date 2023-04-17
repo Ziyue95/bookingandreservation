@@ -1,28 +1,326 @@
 {{define "base"}}
+    <!-- Enable html5  -->
     <!doctype html>
     <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Bootstrap demo</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-    
-        {{block "css" .}}
 
-        {{end}}
-    
+    <head>
+        <!-- Required meta tags for page -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <title>Home Page</title>
+
+        <!-- Import some built-in css styles  -->
+        <!-- bootstrap  -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+        <!-- vanillajs-datepicker  -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.3.1/dist/css/datepicker-bs5.min.css">
+        <!-- notie  -->
+        <link rel="stylesheet" type="text/css" href="https://unpkg.com/notie/dist/notie.min.css">
+        <!-- sweetalert2-->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.15.5/dist/sweetalert2.min.css">
+        <!-- self-defined styles -->
+        <link rel="stylesheet" href="/static/css/styles.css">
+
+        <style>
+        /* styling within class */
+        .paraClass {
+            font-size: 3em;
+        }
+        .secondClass {
+            font-size: 2em;
+            color: red;
+        }
+
+        /* styling within id */
+        #lastPara {
+            text-decoration: underline;
+        }
+        </style>
+
+
     </head>
+
     <body>
+        
+        <!-- Implement bootstrap: navigate bar  -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container-fluid">
+            <a class="navbar-brand" href="#">Navbar</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav">
+
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/about">About</a>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Rooms
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="/generals-quarters">General's Quarters</a>
+                        <a class="dropdown-item" href="/majors-suite">Major's Suite</a>
+                    </div>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/search-availability">Book Now</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/contact">Contact</a>
+                </li>
+
+                </ul>
+            </div>
+            </div>
+        </nav>
 
         {{block "content" .}}
 
         {{end}}
 
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+    
+        <!-- Implement footer with style defined in header  -->
+        <footer class="my-self-defined-footer">
+            <div class="row">
+                <div class="col">
+                    left
+                </div>
+    
+                <div class="col">
+                    center
+                </div>
+    
+                <div class="col">
+                    right
+                </div>
+            </div>
+        </footer>
+
+        <!-- Enable javaScript -->
+        <!-- jquery -->
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        <!-- bootstrap -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+        <!-- vanillajs-datepicker -->
+        <script src="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.1.2/dist/js/datepicker-full.min.js"></script>
+        <!-- notie -->
+        <script src="https://unpkg.com/notie"></script>
+        <!-- sweetAlert -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.15.5/dist/sweetalert2.min.js"></script>
+
         {{block "js" .}}
 
         {{end}}
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+        <script>
+            // Call defined js module
+            let attention = Prompt();
+
+            // function of form validation from Bootstrap
+            // ((...) => {...}) is same as function(...){...}
+            (() => {
+            'use strict'
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            const forms = document.querySelectorAll('.needs-validation')
+            // Loop over them and prevent submission
+            Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                }
+                form.classList.add('was-validated')
+                }, false)
+            })
+            })()
+
+            // Add an EventListener for element with id "colorButton", and trigger function when event "click" happens
+            // ((...) => {...}) is same as function(...){...}
+            document.getElementById("colorButton").addEventListener("click", (() => {
+                // Use no for notification
+                // notify("This is my msg", "error")
+
+                // Use sweetalert for notification
+                // notifyModal("title", "Hello, world", "success", "Button Text")
+
+                // Use SweetAlert2 for Notification & Prompt
+                let html =  `
+                <form id = "check-availability-form" action = "" method = "post" novalidate class="needs-validation">
+                    <div class="form-row">
+                    <div class="col">
+
+                        <div class="form-row" id="reservation-dates-modal">
+
+                        <div class="col">
+                            <label for="start_date" class="form-label">Starting Date</label>
+                            <input disabled required class="form-control" type="text" name="start-date" id="start-date" placeholder="YYYY/MM/DD">
+                        </div>
+
+                        <div class="col">
+                            <label for="end_date" class="form-label">Ending Date</label>
+                            <input disabled required class="form-control" type="text" name="end-date" id="end-date" placeholder="YYYY/MM/DD">
+                        </div>
+
+                        </div>
+
+                    </div>
+                    </div>
+                </form>
+                `;
+                // inject html defined above to Promp.custom function
+                attention.custom({
+                    html: html, 
+                    title: "Choose your date"
+                }); 
+            })
+            )
+
+            // self-defined function for notie
+            function notify(msg, msgType) {
+                notie.alert({
+                    type: msgType, // optional, default = 4, enum: [1, 2, 3, 4, 5, 'success', 'warning', 'error', 'info', 'neutral']
+                    text: msg,
+                })
+            }
+
+            function notifyModal(title, text, icon, buttonText){
+            swal({
+                    title: title,
+                    text: text,
+                    icon: icon,
+                    button: buttonText,
+                    })
+            }
+
+        
+            // Define javascript modules
+            function Prompt() {
+
+            // Implement toast functionality in Prompt
+            let toast = function(c) {
+
+                const {
+                    msg = "",
+                    icon = "success",
+                    position = "top-end",
+                } = c;
+
+                const Toast = Swal.mixin({
+                    toast: true,
+                    title: msg,
+                    position: position,
+                    icon: icon,
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+                Toast.fire({})
+            }
+
+            // Implement success functionality in Prompt
+            let success = function(c) {
+                
+                const {
+                    msg = "",
+                    title = "",
+                    footer = '<a href="">Why do I have this issue?</a>',
+                } = c;
+
+                Swal.fire({
+                icon: 'success',
+                title: title,
+                text: msg,
+                footer: footer
+                })
+            }
+
+            // Implement error functionality in Prompt
+            let error = function(c) {
+                
+                const {
+                    msg = "",
+                    title = "",
+                    footer = '<a href="">Why do I have this issue?</a>',
+                } = c;
+
+                Swal.fire({
+                icon: 'error',
+                title: title,
+                text: msg,
+                footer: footer
+                })
+            }
+
+            // Implement availability check
+            async function custom(c) {
+                
+                const {
+                    html = "",
+                    title = "",
+                } = c;
+
+                const { value: formValues } = await Swal.fire({
+                    title: title,
+                    html: html,
+                    backdrop: false,
+                    focusConfirm: false,
+                    showCancelButton: true,
+                    willOpen: () => {
+                        const elem = document.getElementById("reservation-dates-modal");
+                        const rp = new DateRangePicker(elem, {
+                            format: 'yyyy/mm/dd',
+                            showOnFocus: true,
+                        })
+                    },
+                    didOpen: () => {
+                        document.getElementById("start-date").removeAttribute("disabled");
+                        document.getElementById("end-date").removeAttribute("disabled");
+                    },
+                    preConfirm: () => {
+                        return [
+                            document.getElementById('start-date').value,
+                            document.getElementById('end-date').value
+                        ]
+                    }
+                })
+
+                if (formValues) {
+                    Swal.fire(JSON.stringify(formValues))
+                }
+
+            }
+
+            return {
+                toast: toast,
+                success: success,
+                error: error,
+                custom: custom,
+            }
+
+            }
+
+            
+
+        </script>
+
+
+
     </body>
+
     </html>
+
 {{end}}

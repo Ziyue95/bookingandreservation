@@ -1,0 +1,69 @@
+{{template "base" .}}
+
+{{define "content"}}
+    <div class="container">
+
+            <div class="row">
+                <div class="col-md-3"></div>
+                <div class="col-md-6">
+                    <h1 class="mt-5">Search for Availability</h1>
+                    
+                    <!-- Implement form  -->
+                    <form action="/search-availability" method="post" novalidate class="needs-validation"> <!-- add action: send to where; make: -->
+                        <!--Nosurf requires a (hidden) field on the form doing the post, it needs a certain name: csrf_token-->
+                        <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
+                         <!-- Implement Date range picker using vanillajs-datepicker -->
+                        <div class="form-row">
+                          <div class="col">
+
+                            <div class="form-row" id="reservation-dates">
+
+                              <div class="col">
+                                <label for="start_date" class="form-label">Starting Date</label>
+                                <input required class="form-control" type="text" name="start" placeholder="YYYY/MM/DD">
+                                <div class="valid-feedback">
+                                  Looks good!
+                                </div>
+                                <div class="invalid-feedback">
+                                  Please choose a starting date.
+                                </div>
+                              </div>
+
+                              <div class="col">
+                                <label for="end_date" class="form-label">Ending Date</label>
+                                <input required class="form-control" type="text" name="end" placeholder="YYYY/MM/DD">
+                                <div class="valid-feedback">
+                                  Looks good!
+                                </div>
+                                <div class="invalid-feedback">
+                                  Please choose a ending date later than starting date.
+                                </div>
+                              </div>
+
+                            </div>
+
+                          </div>
+                        </div>
+
+                        <hr>
+
+                        <button type="submit" class="btn btn-primary">Search Availability</button>
+                      </form>
+
+
+                </div>
+            </div>
+
+        </div>
+{{end}}
+
+{{define "js"}}
+  <script>
+    // call DateRangePicker constructor with the block element 
+    const elem = document.getElementById("reservation-dates");
+    const rangepicker = new DateRangePicker(elem, {
+    // specify date format
+    format: "yyyy/mm/dd"
+    }); 
+  </script>
+{{end}}
