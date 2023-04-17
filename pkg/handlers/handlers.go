@@ -1,7 +1,9 @@
 package handlers
 
 import (
+	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/Ziyue95/bookingandreservation/pkg/config"
@@ -88,6 +90,34 @@ func (m *Repository) PostAvailability(w http.ResponseWriter, r *http.Request) {
 	start := r.Form.Get("start")
 	end := r.Form.Get("end")
 	w.Write([]byte(fmt.Sprintf("start date is %s and end is %s", start, end)))
+}
+
+// `json:<feature_name>`
+type jsonResponse struct {
+	OK      bool   `json:"ok"`
+	Message string `json:"message"`
+}
+
+// Availability JSON handles request for availability and send JSON response
+func (m *Repository) AvailabilityJSON(w http.ResponseWriter, r *http.Request) {
+	// Build a JSON response
+	resp := jsonResponse{
+		OK:      true,
+		Message: "Available!",
+	}
+
+	// Marshal resp into json(out) with indent
+	out, err := json.MarshalIndent(resp, "", "     ")
+	if err != nil {
+		log.Println(err)
+	}
+
+	// Create a header to tell the web browser wut kind of response I am sending:
+	// application/json <- standard header for json files
+	w.Header().Set("Content-Type", "application/json") // set Content-Type in the header as application/json
+	// Write to the web browser
+	w.Write(out)
+
 }
 
 // Contact renders the contact page

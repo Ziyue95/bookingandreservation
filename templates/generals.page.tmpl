@@ -34,42 +34,66 @@
         </div>
 {{end}}
 
+
 {{define "js"}}
-    <script>
-        // Add an EventListener for element with id "check-availability-button", and trigger function when event "click" happens
-        // ((...) => {...}) is same as function(...){...}
-        document.getElementById("check-availability-button").addEventListener("click", (() => {
-
-            // Use SweetAlert2 for Notification & Prompt
-            let html =  `
-            <form id = "check-availability-form" action = "" method = "post" novalidate class="needs-validation">
-                <div class="form-row">
+<script>
+    // Add an EventListener for element with id "check-availability-button", and trigger function when event "click" happens
+    // ((...) => {...}) is same as function(...){...}
+    document.getElementById("check-availability-button").addEventListener("click", function () {
+        // Use SweetAlert2 for Notification & Prompt
+        let html = `
+        <form id="check-availability-form" action="" method="post" novalidate class="needs-validation">
+            <div class="form-row">
                 <div class="col">
-
                     <div class="form-row" id="reservation-dates-modal">
-
-                    <div class="col">
-                        <label for="start_date" class="form-label">Starting Date</label>
-                        <input disabled required class="form-control" type="text" name="start-date" id="start-date" placeholder="YYYY/MM/DD">
-                    </div>
-
-                    <div class="col">
-                        <label for="end_date" class="form-label">Ending Date</label>
-                        <input disabled required class="form-control" type="text" name="end-date" id="end-date" placeholder="YYYY/MM/DD">
-                    </div>
+                        <div class="col">
+                            <label for="start_date" class="form-label">Starting Date</label>
+                            <input disabled required class="form-control" type="text" name="start-date" id="start-date" placeholder="YYYY-MM-DD">
+                        </div>
+                        <div class="col">
+                            <label for="end_date" class="form-label">Ending Date</label>
+                            <input disabled required class="form-control" type="text" name="end-date" id="end-date" placeholder="YYYY-MM-DD">
+                        </div>
 
                     </div>
-
                 </div>
-                </div>
-            </form>
-            `;
-            // inject html defined above to Promp.custom function
-            attention.custom({
-                html: html, 
-                title: "Choose your date"
-            }); 
-        })
-        )
-    </script>
+            </div>
+        </form>
+        `;
+        // inject html defined above to Promp.custom function
+        attention.custom({
+            title: 'Choose your dates',
+            html: html,
+            willOpen: () => {
+                const elem = document.getElementById("reservation-dates-modal");
+                const rp = new DateRangePicker(elem, {
+                    format: 'yyyy-mm-dd',
+                    showOnFocus: true,
+                })
+            },
+            didOpen: () => {
+                document.getElementById("start-date").removeAttribute("disabled");
+                document.getElementById("end-date").removeAttribute("disabled");
+            },
+            callback: function(result) {
+                console.log("called");
+
+                let form = document.getElementById("check-availability-form");
+                let formData = new FormData(form);
+                formData.append("csrf_token", "{{.CSRFToken}}");
+
+                fetch('/search-availability-json', {
+                    method: "post",
+                    body: formData,
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data);
+                        console.log(data.ok);
+                        console.log(data.message);
+                    })
+            }
+        });
+    })
+</script>
 {{end}}

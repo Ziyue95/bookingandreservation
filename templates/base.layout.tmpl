@@ -224,8 +224,8 @@
                     timer: 3000,
                     timerProgressBar: true,
                     didOpen: (toast) => {
-                    toast.addEventListener('mouseenter', Swal.stopTimer)
-                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
                     }
                 })
                 Toast.fire({})
@@ -267,28 +267,26 @@
 
             // Implement availability check
             async function custom(c) {
-                
                 const {
                     html = "",
                     title = "",
                 } = c;
 
-                const { value: formValues } = await Swal.fire({
+                const { value: result } = await Swal.fire({
                     title: title,
                     html: html,
                     backdrop: false,
                     focusConfirm: false,
                     showCancelButton: true,
                     willOpen: () => {
-                        const elem = document.getElementById("reservation-dates-modal");
-                        const rp = new DateRangePicker(elem, {
-                            format: 'yyyy/mm/dd',
-                            showOnFocus: true,
-                        })
+                        if (c.willOpen !== undefined) {
+                            c.willOpen();
+                        }
                     },
                     didOpen: () => {
-                        document.getElementById("start-date").removeAttribute("disabled");
-                        document.getElementById("end-date").removeAttribute("disabled");
+                        if (c.didOpen !== undefined){
+                            c.didOpen();
+                        }
                     },
                     preConfirm: () => {
                         return [
@@ -297,11 +295,23 @@
                         ]
                     }
                 })
-
-                if (formValues) {
-                    Swal.fire(JSON.stringify(formValues))
+                
+                // check if we have the result, execute AFTER the Swal dialog is closed
+                if (result) {
+                    // result is not get from the "canel" button
+                    if (result.dismiss !== Swal.DismissReason.cancel) {
+                        // check if result is empty
+                        if (result.value !== "") {
+                            if (c.callback !== undefined) {
+                                c.callback(result);
+                            }
+                        } else {
+                            c.callback(false);
+                        }
+                    } else {
+                        c.callback(false);
+                    }
                 }
-
             }
 
             return {
@@ -310,17 +320,11 @@
                 error: error,
                 custom: custom,
             }
+        }
 
-            }
-
-            
-
-        </script>
-
-
+    </script>
 
     </body>
 
     </html>
-
 {{end}}
