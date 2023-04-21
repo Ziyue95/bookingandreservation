@@ -7,8 +7,8 @@ import (
 	"net/http"
 	"path/filepath"
 
-	"github.com/Ziyue95/bookingandreservation/pkg/config"
-	"github.com/Ziyue95/bookingandreservation/pkg/models"
+	"github.com/Ziyue95/bookingandreservation/internal/config"
+	"github.com/Ziyue95/bookingandreservation/internal/models"
 	"github.com/justinas/nosurf"
 )
 
@@ -24,6 +24,11 @@ func NewTemplates(a *config.AppConfig) {
 
 // AddDefaultData adds default value to td
 func AddDefaultData(td *models.TemplateData, r *http.Request) *models.TemplateData {
+	// Take success/warning/error msg from session
+	td.Flash = app.Session.PopString(r.Context(), "flash")
+	td.Warning = app.Session.PopString(r.Context(), "warning")
+	td.Error = app.Session.PopString(r.Context(), "error")
+
 	td.CSRFToken = nosurf.Token(r)
 	return td
 }

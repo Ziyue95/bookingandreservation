@@ -106,113 +106,124 @@
             </div>
         </footer>
 
-        <!-- Enable javaScript -->
-        <!-- jquery -->
-        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-        <!-- bootstrap -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
-        <!-- vanillajs-datepicker -->
-        <script src="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.1.2/dist/js/datepicker-full.min.js"></script>
-        <!-- notie -->
-        <script src="https://unpkg.com/notie"></script>
-        <!-- sweetAlert -->
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.15.5/dist/sweetalert2.min.js"></script>
+    <!-- Enable javaScript -->
+    <!-- jquery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <!-- bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+    <!-- vanillajs-datepicker -->
+    <script src="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.1.2/dist/js/datepicker-full.min.js"></script>
+    <!-- notie -->
+    <script src="https://unpkg.com/notie"></script>
+    <!-- sweetAlert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.15.5/dist/sweetalert2.min.js"></script>
 
-        {{block "js" .}}
 
+    {{block "js" .}}
+
+    {{end}}
+
+    <script>
+        // Call defined js module
+        let attention = Prompt();
+
+        // function of form validation from Bootstrap
+        // ((...) => {...}) is same as function(...){...}
+        (() => {
+        'use strict'
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        const forms = document.querySelectorAll('.needs-validation')
+        // Loop over them and prevent submission
+        Array.from(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+            if (!form.checkValidity()) {
+                event.preventDefault()
+                event.stopPropagation()
+            }
+            form.classList.add('was-validated')
+            }, false)
+        })
+        })()
+
+        /*
+        // Add an EventListener for element with id "colorButton", and trigger function when event "click" happens
+        // ((...) => {...}) is same as function(...){...}
+        document.getElementById("colorButton").addEventListener("click", (() => {
+            // Use no for notification
+            // notify("This is my msg", "error")
+
+            // Use sweetalert for notification
+            // notifyModal("title", "Hello, world", "success", "Button Text")
+
+            // Use SweetAlert2 for Notification & Prompt
+            let html =  `
+            <form id = "check-availability-form" action = "" method = "post" novalidate class="needs-validation">
+                <div class="form-row">
+                <div class="col">
+
+                    <div class="form-row" id="reservation-dates-modal">
+
+                    <div class="col">
+                        <label for="start_date" class="form-label">Starting Date</label>
+                        <input disabled required class="form-control" type="text" name="start-date" id="start-date" placeholder="YYYY/MM/DD">
+                    </div>
+
+                    <div class="col">
+                        <label for="end_date" class="form-label">Ending Date</label>
+                        <input disabled required class="form-control" type="text" name="end-date" id="end-date" placeholder="YYYY/MM/DD">
+                    </div>
+
+                    </div>
+
+                </div>
+                </div>
+            </form>
+            `;
+            // inject html defined above to Promp.custom function
+            attention.custom({
+                html: html, 
+                title: "Choose your date"
+            }); 
+        })
+        )
+        */
+
+
+        function notify(msg, msgType) {
+            notie.alert({
+                type: msgType,
+                text: msg,
+            })
+        }
+
+        function notifyModal(title, text, icon, confirmationButtonText) {
+            Swal.fire({
+                title: title,
+                html: text,
+                icon: icon,
+                confirmButtonText: confirmationButtonText
+            })
+        }
+
+        {{with .Error}}
+            notify("{{.}}", "error");
         {{end}}
 
-        <script>
-            // Call defined js module
-            let attention = Prompt();
+        {{with .Flash}}
+            notify("{{.}}", "success");
+        {{end}}
 
-            // function of form validation from Bootstrap
-            // ((...) => {...}) is same as function(...){...}
-            (() => {
-            'use strict'
-            // Fetch all the forms we want to apply custom Bootstrap validation styles to
-            const forms = document.querySelectorAll('.needs-validation')
-            // Loop over them and prevent submission
-            Array.from(forms).forEach(form => {
-                form.addEventListener('submit', event => {
-                if (!form.checkValidity()) {
-                    event.preventDefault()
-                    event.stopPropagation()
-                }
-                form.classList.add('was-validated')
-                }, false)
-            })
-            })()
+        {{with .Warning}}
+            notify("{{.}}", "warning");
+        {{end}}
 
-            // Add an EventListener for element with id "colorButton", and trigger function when event "click" happens
-            // ((...) => {...}) is same as function(...){...}
-            document.getElementById("colorButton").addEventListener("click", (() => {
-                // Use no for notification
-                // notify("This is my msg", "error")
-
-                // Use sweetalert for notification
-                // notifyModal("title", "Hello, world", "success", "Button Text")
-
-                // Use SweetAlert2 for Notification & Prompt
-                let html =  `
-                <form id = "check-availability-form" action = "" method = "post" novalidate class="needs-validation">
-                    <div class="form-row">
-                    <div class="col">
-
-                        <div class="form-row" id="reservation-dates-modal">
-
-                        <div class="col">
-                            <label for="start_date" class="form-label">Starting Date</label>
-                            <input disabled required class="form-control" type="text" name="start-date" id="start-date" placeholder="YYYY/MM/DD">
-                        </div>
-
-                        <div class="col">
-                            <label for="end_date" class="form-label">Ending Date</label>
-                            <input disabled required class="form-control" type="text" name="end-date" id="end-date" placeholder="YYYY/MM/DD">
-                        </div>
-
-                        </div>
-
-                    </div>
-                    </div>
-                </form>
-                `;
-                // inject html defined above to Promp.custom function
-                attention.custom({
-                    html: html, 
-                    title: "Choose your date"
-                }); 
-            })
-            )
-
-            // self-defined function for notie
-            function notify(msg, msgType) {
-                notie.alert({
-                    type: msgType, // optional, default = 4, enum: [1, 2, 3, 4, 5, 'success', 'warning', 'error', 'info', 'neutral']
-                    text: msg,
-                })
-            }
-
-            function notifyModal(title, text, icon, buttonText){
-            swal({
-                    title: title,
-                    text: text,
-                    icon: icon,
-                    button: buttonText,
-                    })
-            }
-
-        
-            // Define javascript modules
-            function Prompt() {
-
-            // Implement toast functionality in Prompt
-            let toast = function(c) {
-
+        function Prompt() {
+            let toast = function (c) {
                 const {
-                    msg = "",
-                    icon = "success",
-                    position = "top-end",
+                    msg = '',
+                    icon = 'success',
+                    position = 'top-end',
+
                 } = c;
 
                 const Toast = Swal.mixin({
@@ -228,80 +239,74 @@
                         toast.addEventListener('mouseleave', Swal.resumeTimer)
                     }
                 })
+
                 Toast.fire({})
             }
 
-            // Implement success functionality in Prompt
-            let success = function(c) {
-                
+            let success = function (c) {
                 const {
                     msg = "",
                     title = "",
-                    footer = '<a href="">Why do I have this issue?</a>',
-                } = c;
+                    footer = "",
+                } = c
 
                 Swal.fire({
-                icon: 'success',
-                title: title,
-                text: msg,
-                footer: footer
+                    icon: 'success',
+                    title: title,
+                    text: msg,
+                    footer: footer,
                 })
+
             }
 
-            // Implement error functionality in Prompt
-            let error = function(c) {
-                
+            let error = function (c) {
                 const {
                     msg = "",
                     title = "",
-                    footer = '<a href="">Why do I have this issue?</a>',
-                } = c;
+                    footer = "",
+                } = c
 
                 Swal.fire({
-                icon: 'error',
-                title: title,
-                text: msg,
-                footer: footer
+                    icon: 'error',
+                    title: title,
+                    text: msg,
+                    footer: footer,
                 })
+
             }
 
-            // Implement availability check
             async function custom(c) {
                 const {
-                    html = "",
+                    msg = "",
                     title = "",
                 } = c;
 
-                const { value: result } = await Swal.fire({
+                const {value: result} = await Swal.fire({
                     title: title,
-                    html: html,
+                    html: msg,
                     backdrop: false,
                     focusConfirm: false,
                     showCancelButton: true,
-                    // Move willOpen, didOpen that specific for this usecase to c, which improve the generality of function custom in Prompt
                     willOpen: () => {
                         if (c.willOpen !== undefined) {
                             c.willOpen();
                         }
                     },
                     didOpen: () => {
-                        if (c.didOpen !== undefined){
+                        if (c.didOpen !== undefined) {
                             c.didOpen();
                         }
                     },
                     preConfirm: () => {
                         return [
-                            document.getElementById('start-date').value,
-                            document.getElementById('end-date').value
+                            document.getElementById('start').value,
+                            document.getElementById('end').value
                         ]
                     }
                 })
-                
-                // check if we have the result, execute AFTER the Swal dialog is closed
+
                 if (result) {
-                    // result is not get from the "canel" button
                     if (result.dismiss !== Swal.DismissReason.cancel) {
-                        // check if result is empty
                         if (result.value !== "") {
                             if (c.callback !== undefined) {
                                 c.callback(result);

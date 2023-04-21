@@ -64,6 +64,7 @@
         attention.custom({
             title: 'Choose your dates',
             html: html,
+            // Move willOpen, didOpen that specific for this usecase to c, which improve the generality of function custom in Prompt
             willOpen: () => {
                 const elem = document.getElementById("reservation-dates-modal");
                 const rp = new DateRangePicker(elem, {

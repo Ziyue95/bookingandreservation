@@ -6,9 +6,10 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/Ziyue95/bookingandreservation/pkg/config"
-	"github.com/Ziyue95/bookingandreservation/pkg/models"
-	"github.com/Ziyue95/bookingandreservation/pkg/render"
+	"github.com/Ziyue95/bookingandreservation/internal/config"
+	"github.com/Ziyue95/bookingandreservation/internal/forms"
+	"github.com/Ziyue95/bookingandreservation/internal/models"
+	"github.com/Ziyue95/bookingandreservation/internal/render"
 )
 
 // Repository is the repository type
@@ -66,7 +67,61 @@ func (m *Repository) About(w http.ResponseWriter, r *http.Request) {
 
 // Reservation renders the make a reservation page and displays form
 func (m *Repository) Reservation(w http.ResponseWriter, r *http.Request) {
-	render.RenderTemplate(w, r, "make-reservation.page.tmpl", &models.TemplateData{})
+	var emptyReservation models.Reservation
+	data := make(map[string]interface{})
+	data["reservation"] = emptyReservation
+
+	render.RenderTemplate(w, r, "make-reservation.page.tmpl", &models.TemplateData{
+		// initialize an empty form $ data for when first time rendering the page
+		Form: forms.New(nil),
+		Data: data,
+	})
+}
+
+// PostReservation handles the posting of a reservation form
+func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
+	// Parse the form and check err
+	err := r.ParseForm()
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
+	// Get client-entered data from form with id using r.Form.Get
+	reservation := models.Reservation{
+		FirstName: r.Form.Get("first_name"),
+		LastName:  r.Form.Get("last_name"),
+		Email:     r.Form.Get("email"),
+		Phone:     r.Form.Get("phone"),
+	}
+
+	// Form validation
+	form := forms.New(r.PostForm)
+	// 1. Check if required field has value
+	// form.Has("first_name", r)
+	form.Required("first_name", "last_name", "email", "phone")
+	// check minimum length for "first_name"
+	form.MinLength("first_name", 3, r)
+	// check email
+	form.IsEmail("email")
+
+	if !form.Valid() {
+		data := make(map[string]interface{})
+		data["reservation"] = reservation
+		// render the page using both client-entered data(reservation) and info stored in form(like errors, etc)
+		render.RenderTemplate(w, r, "make-reservation.page.tmpl", &models.TemplateData{
+			// Include form info: export error msg to web page
+			Form: form,
+			Data: data,
+		})
+		return
+	}
+
+	// Throw the reservation variable into session stored in App (m.App.Session)
+	m.App.Session.Put(r.Context(), "reservation", reservation)
+	// Direct the user post the reservation to /reservation-summary with respond code http.StatusSeeOther(303)
+	http.Redirect(w, r, "/reservation-summary", http.StatusSeeOther)
+
 }
 
 // Generals renders the room page
@@ -123,4 +178,29 @@ func (m *Repository) AvailabilityJSON(w http.ResponseWriter, r *http.Request) {
 // Contact renders the contact page
 func (m *Repository) Contact(w http.ResponseWriter, r *http.Request) {
 	render.RenderTemplate(w, r, "contact.page.tmpl", &models.TemplateData{})
+}
+
+// ReservationSummary displays the res summary page
+func (m *Repository) ReservationSummary(w http.ResponseWriter, r *http.Request) {
+	reservation, ok := m.App.Session.Get(r.Context(), "reservation").(models.Reservation)
+	// Make sure if we get reservation from session
+	if !ok {
+		log.Println("can't get item from session")
+		// Put error msg into r.Context() with field "error"
+		// Can take msg using app.Session.PopString(r.Context(), "error");
+		m.App.Session.Put(r.Context(), "error", "Can't get reservation from session")
+		// Redirect user back to homepage
+		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
+		return
+	}
+
+	// After get reservation info -> remove reservation from Session
+	m.App.Session.Remove(r.Context(), "reservation")
+
+	data := make(map[string]interface{})
+	data["reservation"] = reservation
+
+	render.RenderTemplate(w, r, "reservation-summary.page.tmpl", &models.TemplateData{
+		Data: data,
+	})
 }

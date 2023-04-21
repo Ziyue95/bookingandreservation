@@ -1,14 +1,16 @@
 package main
 
 import (
+	"encoding/gob"
 	"fmt"
 	"log"
 	"net/http"
 	"time"
 
-	"github.com/Ziyue95/bookingandreservation/pkg/config"
-	"github.com/Ziyue95/bookingandreservation/pkg/handlers"
-	"github.com/Ziyue95/bookingandreservation/pkg/render"
+	"github.com/Ziyue95/bookingandreservation/internal/config"
+	"github.com/Ziyue95/bookingandreservation/internal/handlers"
+	"github.com/Ziyue95/bookingandreservation/internal/models"
+	"github.com/Ziyue95/bookingandreservation/internal/render"
 	"github.com/alexedwards/scs/v2"
 )
 
@@ -19,6 +21,29 @@ var app config.AppConfig
 var sessionManager *scs.SessionManager // use pointer for easy injection to other pkgs
 
 func main() {
+	// run main logic in run
+	err := run()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Println(fmt.Sprintf("Start the web application on port %s", portNumber))
+
+	// Setup ROUTING service using pat/chi:
+	srv := &http.Server{
+		Addr:    portNumber,
+		Handler: routes(&app),
+	}
+
+	err = srv.ListenAndServe()
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+func run() error {
+	// Setup components to be put into the session
+	gob.Register(models.Reservation{})
 
 	// change this to true when in production mode
 	app.InProduction = false
@@ -37,6 +62,7 @@ func main() {
 	tc, err := render.CreateTemplateCache()
 	if err != nil {
 		log.Fatal("Can not create template cache")
+		return err
 	}
 	app.TemplateCache = tc
 	// In development mode, set app.UseCache = false -> update app variable when application is running
@@ -58,16 +84,5 @@ func main() {
 		_ = http.ListenAndServe(portNumber, nil)
 	*/
 
-	fmt.Println(fmt.Sprintf("Start the web application on port %s", portNumber))
-
-	// Setup ROUTING service using pat/chi:
-	srv := &http.Server{
-		Addr:    portNumber,
-		Handler: routes(&app),
-	}
-
-	err = srv.ListenAndServe()
-	if err != nil {
-		log.Fatal(err)
-	}
+	return nil
 }
