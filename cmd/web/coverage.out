@@ -1,0 +1,11 @@
+mode: set
+github.com/Ziyue95/bookingandreservation/cmd/web/middleware.go:10.45,22.2 3 1
+github.com/Ziyue95/bookingandreservation/cmd/web/middleware.go:25.50,27.2 1 1
+github.com/Ziyue95/bookingandreservation/cmd/web/routes.go:14.49,54.2 18 1
+github.com/Ziyue95/bookingandreservation/cmd/web/main.go:23.13,26.16 2 0
+github.com/Ziyue95/bookingandreservation/cmd/web/main.go:30.2,39.16 4 0
+github.com/Ziyue95/bookingandreservation/cmd/web/main.go:26.16,28.3 1 0
+github.com/Ziyue95/bookingandreservation/cmd/web/main.go:39.16,41.3 1 0
+github.com/Ziyue95/bookingandreservation/cmd/web/main.go:44.18,63.16 10 1
+github.com/Ziyue95/bookingandreservation/cmd/web/main.go:67.2,87.12 6 1
+github.com/Ziyue95/bookingandreservation/cmd/web/main.go:63.16,66.3 2 0
