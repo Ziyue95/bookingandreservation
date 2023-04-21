@@ -1,0 +1,24 @@
+mode: set
+github.com/Ziyue95/bookingandreservation/internal/handlers/handlers.go:24.47,28.2 1 1
+github.com/Ziyue95/bookingandreservation/internal/handlers/handlers.go:31.33,33.2 1 1
+github.com/Ziyue95/bookingandreservation/internal/handlers/handlers.go:39.67,46.2 3 1
+github.com/Ziyue95/bookingandreservation/internal/handlers/handlers.go:49.68,55.20 4 1
+github.com/Ziyue95/bookingandreservation/internal/handlers/handlers.go:59.2,65.4 2 1
+github.com/Ziyue95/bookingandreservation/internal/handlers/handlers.go:55.20,57.3 1 1
+github.com/Ziyue95/bookingandreservation/internal/handlers/handlers.go:69.74,79.2 4 1
+github.com/Ziyue95/bookingandreservation/internal/handlers/handlers.go:82.78,85.16 2 0
+github.com/Ziyue95/bookingandreservation/internal/handlers/handlers.go:91.2,108.19 6 0
+github.com/Ziyue95/bookingandreservation/internal/handlers/handlers.go:121.2,123.66 2 0
+github.com/Ziyue95/bookingandreservation/internal/handlers/handlers.go:85.16,88.3 2 0
+github.com/Ziyue95/bookingandreservation/internal/handlers/handlers.go:108.19,118.3 4 0
+github.com/Ziyue95/bookingandreservation/internal/handlers/handlers.go:128.71,130.2 1 1
+github.com/Ziyue95/bookingandreservation/internal/handlers/handlers.go:133.69,135.2 1 1
+github.com/Ziyue95/bookingandreservation/internal/handlers/handlers.go:138.75,140.2 1 1
+github.com/Ziyue95/bookingandreservation/internal/handlers/handlers.go:143.79,148.2 3 0
+github.com/Ziyue95/bookingandreservation/internal/handlers/handlers.go:157.79,166.16 3 0
+github.com/Ziyue95/bookingandreservation/internal/handlers/handlers.go:172.2,174.14 2 0
+github.com/Ziyue95/bookingandreservation/internal/handlers/handlers.go:166.16,168.3 1 0
+github.com/Ziyue95/bookingandreservation/internal/handlers/handlers.go:179.70,181.2 1 1
+github.com/Ziyue95/bookingandreservation/internal/handlers/handlers.go:184.81,187.9 2 0
+github.com/Ziyue95/bookingandreservation/internal/handlers/handlers.go:198.2,205.4 4 0
+github.com/Ziyue95/bookingandreservation/internal/handlers/handlers.go:187.9,195.3 4 0
