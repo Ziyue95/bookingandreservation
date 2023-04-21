@@ -2,6 +2,7 @@ package render
 
 import (
 	"bytes"
+	"fmt"
 	"html/template"
 	"log"
 	"net/http"
@@ -12,10 +13,13 @@ import (
 	"github.com/justinas/nosurf"
 )
 
+// functions contains all function available to the golang template
 var functions = template.FuncMap{}
 
 // app is a pointer to config.AppConfig for render pkg to use
 var app *config.AppConfig
+
+var pathToTemplates = "./templates"
 
 // NewTemplates sets the config for the template package
 func NewTemplates(a *config.AppConfig) {
@@ -79,13 +83,14 @@ func CreateTemplateCache() (map[string]*template.Template, error) {
 	myCache := map[string]*template.Template{}
 
 	// get all files named *.page.tmpl from ./template
-	pages, err := filepath.Glob("./templates/*.page.tmpl")
+	pages, err := filepath.Glob(fmt.Sprintf("%s/*.page.tmpl", pathToTemplates))
 	if err != nil {
 		return myCache, err
 	}
 
 	// get all layout files (*.layout.tmpl) from ./template
-	matches, err := filepath.Glob("./templates/*.layout.tmpl")
+	matches, err := filepath.Glob(fmt.Sprintf("%s/*.layout.tmpl", pathToTemplates))
+
 	if err != nil {
 		return myCache, err
 	}
@@ -96,13 +101,13 @@ func CreateTemplateCache() (map[string]*template.Template, error) {
 		// name: name of template file (*.page.tmpl)
 		name := filepath.Base(page)
 		// ts: parsed template set by parsing the template name in page
-		ts, err := template.New(name).ParseFiles(page)
+		ts, err := template.New(name).Funcs(functions).ParseFiles(page)
 		if err != nil {
 			return myCache, err
 		}
 
 		if len(matches) > 0 {
-			ts, err = ts.ParseGlob("./templates/*.layout.tmpl")
+			ts, err = ts.ParseGlob(fmt.Sprintf("%s/*.layout.tmpl", pathToTemplates))
 			if err != nil {
 				return myCache, err
 			}
