@@ -101,7 +101,7 @@ func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
 	// form.Has("first_name", r)
 	form.Required("first_name", "last_name", "email", "phone")
 	// check minimum length for "first_name"
-	form.MinLength("first_name", 3, r)
+	form.MinLength("first_name", 3)
 	// check email
 	form.IsEmail("email")
 
