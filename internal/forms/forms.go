@@ -45,7 +45,7 @@ func (f *Form) Required(fields ...string) {
 
 // 3. Has checks if certain fields are included in the form
 func (f *Form) Has(field string, r *http.Request) bool {
-	x := r.Form.Get(field)
+	x := f.Values.Get(field)
 	if x == "" {
 		return false
 	}
@@ -53,8 +53,8 @@ func (f *Form) Has(field string, r *http.Request) bool {
 }
 
 // 4. MinLength checks for string minimum length
-func (f *Form) MinLength(field string, length int, r *http.Request) bool {
-	x := r.Form.Get(field)
+func (f *Form) MinLength(field string, length int) bool {
+	x := f.Values.Get(field)
 	if len(x) < length {
 		f.Errors.Add(field, fmt.Sprintf("This field must be at least %d characters long", length))
 		return false

@@ -1,0 +1,18 @@
+mode: set
+github.com/Ziyue95/bookingandreservation/internal/forms/errors.go:6.44,8.2 1 1
+github.com/Ziyue95/bookingandreservation/internal/forms/errors.go:11.42,13.18 2 1
+github.com/Ziyue95/bookingandreservation/internal/forms/errors.go:17.2,17.14 1 1
+github.com/Ziyue95/bookingandreservation/internal/forms/errors.go:13.18,15.3 1 1
+github.com/Ziyue95/bookingandreservation/internal/forms/forms.go:19.33,25.2 1 1
+github.com/Ziyue95/bookingandreservation/internal/forms/forms.go:30.29,32.2 1 1
+github.com/Ziyue95/bookingandreservation/internal/forms/forms.go:36.43,37.31 1 1
+github.com/Ziyue95/bookingandreservation/internal/forms/forms.go:37.31,40.37 2 1
+github.com/Ziyue95/bookingandreservation/internal/forms/forms.go:40.37,42.4 1 1
+github.com/Ziyue95/bookingandreservation/internal/forms/forms.go:47.56,49.13 2 1
+github.com/Ziyue95/bookingandreservation/internal/forms/forms.go:52.2,52.13 1 1
+github.com/Ziyue95/bookingandreservation/internal/forms/forms.go:49.13,51.3 1 1
+github.com/Ziyue95/bookingandreservation/internal/forms/forms.go:56.57,58.21 2 1
+github.com/Ziyue95/bookingandreservation/internal/forms/forms.go:62.2,62.13 1 1
+github.com/Ziyue95/bookingandreservation/internal/forms/forms.go:58.21,61.3 2 1
+github.com/Ziyue95/bookingandreservation/internal/forms/forms.go:66.38,67.40 1 1
+github.com/Ziyue95/bookingandreservation/internal/forms/forms.go:67.40,69.3 1 1
