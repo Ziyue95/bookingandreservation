@@ -6,6 +6,7 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	"os"
 	"path/filepath"
 	"time"
 
@@ -28,6 +29,13 @@ func getRoutes() http.Handler {
 	// Copy from main.go(func run)
 	gob.Register(models.Reservation{})
 	app.InProduction = false
+
+	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
+	app.InfoLog = infoLog
+
+	errorLog := log.New(os.Stdout, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
+	app.ErrorLog = errorLog
+
 	sessionManager = scs.New()
 	sessionManager.Lifetime = 24 * time.Hour
 	sessionManager.Cookie.Persist = true

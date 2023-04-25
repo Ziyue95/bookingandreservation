@@ -13,6 +13,7 @@ type AppConfig struct {
 	TemplateCache map[string]*template.Template
 	// InfoLog: write info to log file
 	InfoLog      *log.Logger
+	ErrorLog     *log.Logger
 	InProduction bool
 	Session      *scs.SessionManager
 }

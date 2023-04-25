@@ -5,10 +5,12 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/Ziyue95/bookingandreservation/internal/config"
 	"github.com/Ziyue95/bookingandreservation/internal/handlers"
+	"github.com/Ziyue95/bookingandreservation/internal/helpers"
 	"github.com/Ziyue95/bookingandreservation/internal/models"
 	"github.com/Ziyue95/bookingandreservation/internal/render"
 	"github.com/alexedwards/scs/v2"
@@ -19,6 +21,8 @@ const portNumber = ":8080"
 
 var app config.AppConfig
 var sessionManager *scs.SessionManager // use pointer for easy injection to other pkgs
+var infoLog *log.Logger
+var errorLog *log.Logger
 
 func main() {
 	// run main logic in run
@@ -48,6 +52,14 @@ func run() error {
 	// change this to true when in production mode
 	app.InProduction = false
 
+	// Set logger
+	// infoLog: print to terminal with prefix "INFO", and flag: log.Ldate|log.Ltime
+	infoLog = log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
+	app.InfoLog = infoLog
+	// errorLog: print to terminal with prefix "ERROR\t", log.Lshortfile: info about the error
+	errorLog = log.New(os.Stdout, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
+	app.ErrorLog = errorLog
+
 	// initialize session config
 	sessionManager = scs.New()
 	sessionManager.Lifetime = 24 * time.Hour
@@ -75,6 +87,7 @@ func run() error {
 	repo := handlers.NewRepo(&app)
 	// pass repo into pointer Repo in handlers pkg
 	handlers.NewHandlers(repo)
+	helpers.NewHelpers(&app)
 
 	/*
 		// Setup basic ROUTING service:

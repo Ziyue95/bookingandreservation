@@ -3,11 +3,11 @@ package handlers
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
 
 	"github.com/Ziyue95/bookingandreservation/internal/config"
 	"github.com/Ziyue95/bookingandreservation/internal/forms"
+	"github.com/Ziyue95/bookingandreservation/internal/helpers"
 	"github.com/Ziyue95/bookingandreservation/internal/models"
 	"github.com/Ziyue95/bookingandreservation/internal/render"
 )
@@ -38,9 +38,9 @@ func NewHandlers(r *Repository) {
 // Define the Handler function for home page:
 func (m *Repository) Home(w http.ResponseWriter, r *http.Request) {
 
-	remoteIP := r.RemoteAddr
+	// remoteIP := r.RemoteAddr
 	// Put the remoteIP into session
-	m.App.Session.Put(r.Context(), "remote_ip", remoteIP)
+	// m.App.Session.Put(r.Context(), "remote_ip", remoteIP)
 
 	render.RenderTemplate(w, r, "home.page.tmpl", &models.TemplateData{})
 }
@@ -48,21 +48,23 @@ func (m *Repository) Home(w http.ResponseWriter, r *http.Request) {
 // Define the Handler function for about page:
 func (m *Repository) About(w http.ResponseWriter, r *http.Request) {
 	// perform some logic
-	stringMap := make(map[string]string)
-	stringMap["test"] = "Hello, again!"
+	// stringMap := make(map[string]string)
+	// stringMap["test"] = "Hello, again!"
 
-	remoteIP := m.App.Session.GetString(r.Context(), "remote_ip")
-	if remoteIP == "" {
-		fmt.Println("Can not retrieve remote ip address")
-	}
+	// remoteIP := m.App.Session.GetString(r.Context(), "remote_ip")
+	// if remoteIP == "" {
+	// 	fmt.Println("Can not retrieve remote ip address")
+	// }
 
-	stringMap["remote_ip"] = remoteIP
+	// stringMap["remote_ip"] = remoteIP
 
 	// send data to the template
 
-	render.RenderTemplate(w, r, "about.page.tmpl", &models.TemplateData{
-		StringMap: stringMap,
-	})
+	// render.RenderTemplate(w, r, "about.page.tmpl", &models.TemplateData{
+	// 	StringMap: stringMap,
+	// })
+
+	render.RenderTemplate(w, r, "about.page.tmpl", &models.TemplateData{})
 }
 
 // Reservation renders the make a reservation page and displays form
@@ -83,7 +85,9 @@ func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
 	// Parse the form and check err
 	err := r.ParseForm()
 	if err != nil {
-		log.Println(err)
+		// log.Println(err)
+		// log error using helpers.ServerError
+		helpers.ServerError(w, err)
 		return
 	}
 
@@ -164,7 +168,9 @@ func (m *Repository) AvailabilityJSON(w http.ResponseWriter, r *http.Request) {
 	// Marshal resp into json(out) with indent
 	out, err := json.MarshalIndent(resp, "", "     ")
 	if err != nil {
-		log.Println(err)
+		// log.Println(err)
+		helpers.ServerError(w, err)
+		return
 	}
 
 	// Create a header to tell the web browser wut kind of response I am sending:
@@ -185,7 +191,8 @@ func (m *Repository) ReservationSummary(w http.ResponseWriter, r *http.Request) 
 	reservation, ok := m.App.Session.Get(r.Context(), "reservation").(models.Reservation)
 	// Make sure if we get reservation from session
 	if !ok {
-		log.Println("can't get item from session")
+		// log.Println("can't get item from session")
+		m.App.ErrorLog.Println("can't get item from session")
 		// Put error msg into r.Context() with field "error"
 		// Can take msg using app.Session.PopString(r.Context(), "error");
 		m.App.Session.Put(r.Context(), "error", "Can't get reservation from session")
