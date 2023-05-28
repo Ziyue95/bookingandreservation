@@ -16,7 +16,9 @@ import (
 	"github.com/alexedwards/scs/v2"
 )
 
-// Declare the port number globally, const(never will be changed)
+// Declare global object
+
+// Port number: const(never will be changed)
 const portNumber = ":8080"
 
 var app config.AppConfig
@@ -46,19 +48,19 @@ func main() {
 }
 
 func run() error {
-	// Setup components to be put into the session
-	gob.Register(models.Reservation{})
-
-	// change this to true when in production mode
+	// Change this to true when in production mode
 	app.InProduction = false
 
-	// Set logger
+	// 1. Set logger and put it into app object
 	// infoLog: print to terminal with prefix "INFO", and flag: log.Ldate|log.Ltime
 	infoLog = log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
 	app.InfoLog = infoLog
 	// errorLog: print to terminal with prefix "ERROR\t", log.Lshortfile: info about the error
 	errorLog = log.New(os.Stdout, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
 	app.ErrorLog = errorLog
+
+	// Initialize components of session(Reservation object)
+	gob.Register(models.Reservation{})
 
 	// initialize session config
 	sessionManager = scs.New()
@@ -70,7 +72,7 @@ func run() error {
 
 	app.Session = sessionManager
 
-	// set template cache for app <- app config variable
+	// Add template files into template cache for app <- app config variable
 	tc, err := render.CreateTemplateCache()
 	if err != nil {
 		log.Fatal("Can not create template cache")
@@ -80,7 +82,7 @@ func run() error {
 	// In development mode, set app.UseCache = false -> update app variable when application is running
 	app.UseCache = false
 
-	// set config for render pkg to use
+	// set app.config for render pkg to use
 	render.NewTemplates(&app)
 
 	// set repos for handlers pkg to use

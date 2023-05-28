@@ -105,7 +105,7 @@ func CreateTemplateCache() (map[string]*template.Template, error) {
 	for _, page := range pages {
 		// name: name of template file (*.page.tmpl)
 		name := filepath.Base(page)
-		// ts: parsed template set by parsing the template name in page
+		// ts: parsed template set injected with functions & parsed by the template name in page
 		ts, err := template.New(name).Funcs(functions).ParseFiles(page)
 		if err != nil {
 			return myCache, err
