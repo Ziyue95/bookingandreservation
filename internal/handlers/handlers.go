@@ -6,24 +6,29 @@ import (
 	"net/http"
 
 	"github.com/Ziyue95/bookingandreservation/internal/config"
+	"github.com/Ziyue95/bookingandreservation/internal/driver"
 	"github.com/Ziyue95/bookingandreservation/internal/forms"
 	"github.com/Ziyue95/bookingandreservation/internal/helpers"
 	"github.com/Ziyue95/bookingandreservation/internal/models"
 	"github.com/Ziyue95/bookingandreservation/internal/render"
+	"github.com/Ziyue95/bookingandreservation/internal/repository"
+	"github.com/Ziyue95/bookingandreservation/internal/repository/dbrepo"
 )
 
 // Repository is the repository type
 type Repository struct {
 	App *config.AppConfig
+	DB  repository.DatabaseRepo
 }
 
 // Repo is the repository used by the handlers
 var Repo *Repository
 
 // NewRepo creates a new repository
-func NewRepo(a *config.AppConfig) *Repository {
+func NewRepo(a *config.AppConfig, db *driver.DB) *Repository {
 	return &Repository{
 		App: a,
+		DB:  dbrepo.NewPostgresRepo(db.SQL, a),
 	}
 }
 

@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/Ziyue95/bookingandreservation/internal/config"
+	"github.com/Ziyue95/bookingandreservation/internal/driver"
 	"github.com/Ziyue95/bookingandreservation/internal/handlers"
 	"github.com/Ziyue95/bookingandreservation/internal/helpers"
 	"github.com/Ziyue95/bookingandreservation/internal/models"
@@ -28,10 +29,12 @@ var errorLog *log.Logger
 
 func main() {
 	// run main logic in run
-	err := run()
+	db, err := run()
 	if err != nil {
 		log.Fatal(err)
 	}
+	// Close DB connection after return
+	defer db.SQL.Close()
 
 	fmt.Println(fmt.Sprintf("Start the web application on port %s", portNumber))
 
@@ -47,7 +50,7 @@ func main() {
 	}
 }
 
-func run() error {
+func run() (*driver.DB, error) {
 	// Change this to true when in production mode
 	app.InProduction = false
 
@@ -72,11 +75,21 @@ func run() error {
 
 	app.Session = sessionManager
 
+	// Connect to DB
+	// connect to database
+	log.Println("Connecting to database...")
+	db, err := driver.ConnectSQL("host=localhost port=5433 dbname=bookings user=home password=")
+	if err != nil {
+		log.Fatal("Cannot connect to database! Dying...")
+	}
+
+	log.Println("Connected to database!")
+
 	// Add template files into template cache for app <- app config variable
 	tc, err := render.CreateTemplateCache()
 	if err != nil {
 		log.Fatal("Can not create template cache")
-		return err
+		return nil, err
 	}
 	app.TemplateCache = tc
 	// In development mode, set app.UseCache = false -> update app variable when application is running
@@ -86,7 +99,7 @@ func run() error {
 	render.NewTemplates(&app)
 
 	// set repos for handlers pkg to use
-	repo := handlers.NewRepo(&app)
+	repo := handlers.NewRepo(&app, db)
 	// pass repo into pointer Repo in handlers pkg
 	handlers.NewHandlers(repo)
 	helpers.NewHelpers(&app)
@@ -99,5 +112,5 @@ func run() error {
 		_ = http.ListenAndServe(portNumber, nil)
 	*/
 
-	return nil
+	return db, nil
 }
