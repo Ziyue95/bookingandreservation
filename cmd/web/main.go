@@ -64,6 +64,9 @@ func run() (*driver.DB, error) {
 
 	// Initialize components of session(Reservation object)
 	gob.Register(models.Reservation{})
+	gob.Register(models.User{})
+	gob.Register(models.Room{})
+	gob.Register(models.Restriction{})
 
 	// initialize session config
 	sessionManager = scs.New()
@@ -96,7 +99,7 @@ func run() (*driver.DB, error) {
 	app.UseCache = false
 
 	// set app.config for render pkg to use
-	render.NewTemplates(&app)
+	render.NewRenderer(&app)
 
 	// set repos for handlers pkg to use
 	repo := handlers.NewRepo(&app, db)
